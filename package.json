@@ -1,0 +1,23 @@
+{
+  "name": "@date-fns/date-fns-scripts",
+  "version": "0.0.1",
+  "description": "Internal scripts for keeping the date-fns Firestore database up-to-date",
+  "main": "index.js",
+  "repository": "https://github.com/leshakoss/date-fns-scripts.git",
+  "author": "Lesha Koss <lesha@hey.com>",
+  "license": "MIT",
+  "scripts": {
+    "migrate": "env RUN_SCRIPT=true ts-node src/migrate.ts"
+  },
+  "dependencies": {
+    "@date-fns/date-fns-db": "^0.0.10",
+    "firebase": "^8.2.2",
+    "firebase-admin": "^9.4.2",
+    "json-bond": "^0.1.0",
+    "typesaurus": "^7.1.0"
+  },
+  "devDependencies": {
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
+  }
+}

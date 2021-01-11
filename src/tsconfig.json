@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "lib": ["es6"],
+    "noImplicitReturns": true,
+    "outDir": "lib",
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "strict": true,
+    "declaration": true,
+    "resolveJsonModule": true
+  },
+  "compileOnSave": true,
+  "exclude": [
+    "node_modules",
+    "lib"
+  ]
+}
