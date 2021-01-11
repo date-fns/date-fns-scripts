@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin'
-import { db, VersionPreview, Version, PagePreview, Page, PACKAGE_NAME, Submodule, SUBMODULES } from '@date-fns/date-fns-db'
+import { db, VersionPreview, Version, PagePreview, Page, PACKAGE_NAME, Submodule } from '@date-fns/date-fns-db'
 import { stringify } from 'json-bond'
 import 'firebase/firestore'
 import { batch, id, add } from 'typesaurus'
@@ -49,7 +49,8 @@ export async function migrate () {
         preRelease: versionValue.prerelease,
         createdAt: versionValue.date,
         pages: [],
-        categories: categoriesValue
+        categories: categoriesValue,
+        submodules: versionValue.features.fp ? [Submodule.Default, Submodule.FP] : [Submodule.Default],
       }
 
       const versionPreview: VersionPreview = {
@@ -64,42 +65,37 @@ export async function migrate () {
       
       versionPagesSnapshot.forEach(pageSnapshot => {
         const pageValue = pageSnapshot.val()
-        const pagePreview: Omit<PagePreview, 'submodules'> = {
-          slug: pageValue.urlId.replace(/\s/g, '-'),
-          category: pageValue.category,
-          title: pageValue.title,
-          summary: pageValue.description,
-        }
 
         if (pageValue.type === 'markdown') {
-          const submodules: Submodule[] = SUBMODULES
-          const page: Page = {
-            submodules,
+          const pagePreview = {
+            submodules: getPageSubmodules(versionValue.features.fp, pageValue.type),
             slug: pageValue.urlId.replace(/\s/g, '-'),
             category: pageValue.category,
             title: pageValue.title,
             summary: pageValue.description,
+          }
+
+          const page: Page = {
+            ...pagePreview,
             package: PACKAGE_NAME,
             version: versionTag,
             type: 'markdown',
             markdown: pageValue.content
           }
+
+          version.pages.push(pagePreview)
           versionPages.push(page)
-          version.pages.push({
-            ...pagePreview,
-            submodules,
-          })
         } else if (pageValue.type === 'jsdoc') {
-          const submodules: Submodule[] =
-            pageValue.kind === 'typedef'
-              ? SUBMODULES
-              : [pageValue.isFPFn ? Submodule.FP : Submodule.Default]
-          const page: Page = {
-            submodules,
-            slug: pageValue.urlId.replace(/\s/g, '-'),
+          const pagePreview: PagePreview = {
+            submodules: getPageSubmodules(versionValue.features.fp, pageValue.type, pageValue.kind, pageValue.isFPFn),
+            slug: pageValue.urlId.replace(/\s/g, '-').replace(/^fp\//, ''),
             category: pageValue.category,
             title: pageValue.title,
             summary: pageValue.description,
+          }
+
+          const page: Page = {
+            ...pagePreview,
             package: PACKAGE_NAME,
             version: versionTag,
             type: 'migrated',
@@ -107,11 +103,7 @@ export async function migrate () {
             doc: stringify(pageValue)
           }
 
-          version.pages.push({
-            ...pagePreview,
-            submodules,
-          })
-
+          version.pages.push(pagePreview)
           versionPages.push(page)
         } else {
           throw new Error(`Unknown page type ${pageValue.type}`)
@@ -145,4 +137,25 @@ export async function migrate () {
 
   console.log('(ﾉ◕ヮ◕)ﾉ*:·ﾟ✧ Done!')
   process.exit()
+}
+
+function getPageSubmodules (
+  fpAvailableForVersion: boolean,
+  type: 'markdown' | 'jsdoc',
+  kind?: 'function' | 'typedef',
+  isFPFn?: boolean
+) {
+  if (!fpAvailableForVersion) {
+    return [Submodule.Default]
+  }
+
+  if (type === 'markdown') {
+    return [Submodule.Default, Submodule.FP]
+  }
+
+  if (kind === 'typedef') {
+    return [Submodule.Default, Submodule.FP]
+  }
+
+  return isFPFn ? [Submodule.FP] : [Submodule.Default]
 }
