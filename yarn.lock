@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@date-fns/date-fns-db@^0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@date-fns/date-fns-db/-/date-fns-db-0.0.10.tgz#e368429d451c4e78308ea291cf8d354d6d86b6f1"
-  integrity sha512-O3FC733DPs/+RcdKUj9zY2uIzH5rSPNhxL244HYYTd9F1kMHqiI2Mq6IkxWDHjTJ6HaD2UF0we/qXuVZ5EcANw==
+"@date-fns/date-fns-db@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@date-fns/date-fns-db/-/date-fns-db-0.0.11.tgz#03889aaa6814f552e2b6dcb4926d4649d6c1abb4"
+  integrity sha512-vwhM82ukhwFvXifJBOXJW/wz6NkpdcfRgdRSSrCSNh6Qaq8hf9GPUOBhhNiEEvW/f16J4kobGcBNPsGs9wg4YQ==
 
 "@firebase/analytics-types@0.4.0":
   version "0.4.0"

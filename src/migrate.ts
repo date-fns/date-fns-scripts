@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin'
-import { db, VersionPreview, Version, PagePreview, Page, PACKAGE_NAME, Submodule } from '@date-fns/date-fns-db'
+import { db, VersionPreview, Version, PagePreview, Page, PACKAGE_NAME, Submodule, SUBMODULES } from '@date-fns/date-fns-db'
 import { stringify } from 'json-bond'
 import 'firebase/firestore'
 import { batch, id, add } from 'typesaurus'
@@ -72,7 +72,7 @@ export async function migrate () {
         }
 
         if (pageValue.type === 'markdown') {
-          const submodules: Submodule[] = ['default', 'fp']
+          const submodules: Submodule[] = SUBMODULES
           const page: Page = {
             submodules,
             slug: pageValue.urlId.replace(/\s/g, '-'),
@@ -92,8 +92,8 @@ export async function migrate () {
         } else if (pageValue.type === 'jsdoc') {
           const submodules: Submodule[] =
             pageValue.kind === 'typedef'
-              ? ['default', 'fp']
-              : [pageValue.isFPFn ? 'fp' : 'default']
+              ? SUBMODULES
+              : [pageValue.isFPFn ? Submodule.FP : Submodule.Default]
           const page: Page = {
             submodules,
             slug: pageValue.urlId.replace(/\s/g, '-'),
