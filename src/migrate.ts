@@ -3,6 +3,7 @@ import { db, VersionPreview, Version, PagePreview, Page, PACKAGE_NAME, Submodule
 import { stringify } from 'json-bond'
 import 'firebase/firestore'
 import { batch, id, add } from 'typesaurus'
+import { getPageSubmodules } from './utils/getPageSubmodules'
 
 if (process.env.RUN_SCRIPT) {
   migrate()
@@ -135,25 +136,4 @@ export async function migrate () {
 
   console.log('(ﾉ◕ヮ◕)ﾉ*:·ﾟ✧ Done!')
   process.exit()
-}
-
-function getPageSubmodules (
-  fpAvailableForVersion: boolean,
-  type: 'markdown' | 'jsdoc',
-  kind?: 'function' | 'typedef',
-  isFPFn?: boolean
-) {
-  if (!fpAvailableForVersion) {
-    return [Submodule.Default]
-  }
-
-  if (type === 'markdown') {
-    return [Submodule.Default, Submodule.FP]
-  }
-
-  if (kind === 'typedef') {
-    return [Submodule.Default, Submodule.FP]
-  }
-
-  return isFPFn ? [Submodule.FP] : [Submodule.Default]
 }
