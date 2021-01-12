@@ -98,7 +98,7 @@ export async function migrate () {
             ...pagePreview,
             package: PACKAGE_NAME,
             version: versionTag,
-            type: 'migrated',
+            type: 'jsdoc',
             name: pageValue.content.name,
             doc: stringify(pageValue)
           }
