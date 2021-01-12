@@ -10,7 +10,7 @@
     "migrate": "env RUN_SCRIPT=true ts-node src/migrate.ts"
   },
   "dependencies": {
-    "@date-fns/date-fns-db": "^0.0.13",
+    "@date-fns/date-fns-db": "^0.0.14",
     "firebase": "^8.2.2",
     "firebase-admin": "^9.4.2",
     "json-bond": "^0.1.0",

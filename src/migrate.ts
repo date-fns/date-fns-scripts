@@ -43,20 +43,18 @@ export async function migrate () {
       const categoriesSnapshot = await admin.database().ref(`/docs/${versionValue.docsKey}/categories`).once('value')
       const categoriesValue = categoriesSnapshot.val()
 
-      const version: Version = {
-        package: PACKAGE_NAME,
-        version: versionTag,
-        preRelease: versionValue.prerelease,
-        createdAt: versionValue.date,
-        pages: [],
-        categories: categoriesValue,
-        submodules: versionValue.features.fp ? [Submodule.Default, Submodule.FP] : [Submodule.Default],
-      }
-
       const versionPreview: VersionPreview = {
         version: versionTag,
         preRelease: versionValue.prerelease,
-        createdAt: versionValue.date
+        createdAt: versionValue.date,
+        submodules: versionValue.features.fp ? [Submodule.Default, Submodule.FP] : [Submodule.Default],
+      }
+
+      const version: Version = {
+        ...versionPreview,
+        package: PACKAGE_NAME,
+        pages: [],
+        categories: categoriesValue,
       }
 
       const versionPages: Page[] = []
