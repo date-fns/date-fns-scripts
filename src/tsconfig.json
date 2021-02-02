@@ -13,8 +13,5 @@
     "resolveJsonModule": true
   },
   "compileOnSave": true,
-  "exclude": [
-    "node_modules",
-    "lib"
-  ]
+  "exclude": ["node_modules", "lib"]
 }

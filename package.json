@@ -1,6 +1,6 @@
 {
   "name": "@date-fns/date-fns-scripts",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Internal scripts for keeping the date-fns Firestore database up-to-date",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -8,6 +8,7 @@
   "author": "Lesha Koss <lesha@hey.com>",
   "license": "MIT",
   "scripts": {
+    "format": "prettier --write",
     "prepublish": "rm -rf lib && tsc",
     "migrate": "env RUN_SCRIPT=true ts-node src/migrate.ts"
   },
@@ -19,7 +20,14 @@
     "typesaurus": "^7.1.0"
   },
   "devDependencies": {
+    "lint-staged": "^10.5.3",
+    "prettier": "^2.2.1",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
+  },
+  "lint-staged": {
+    "*.{js,jsx,json,css,md,ts,tsx}": [
+      "yarn format"
+    ]
   }
 }

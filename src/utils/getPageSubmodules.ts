@@ -1,6 +1,6 @@
 import { Submodule } from '@date-fns/date-fns-db'
 
-export function getPageSubmodules (
+export function getPageSubmodules(
   fpAvailableForVersion: boolean,
   type: 'markdown' | 'jsdoc',
   kind?: 'function' | 'typedef',
