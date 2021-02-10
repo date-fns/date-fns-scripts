@@ -33,14 +33,7 @@ interface VersionData {
 }
 
 export async function publishVersion(data: VersionData) {
-  if (!process.env.DATABASE_URL) {
-    console.log('Please provide DATABASE_URL environment variable')
-    process.exit(1)
-  }
-
-  admin.initializeApp({
-    databaseURL: process.env.DATABASE_URL,
-  })
+  admin.initializeApp()
 
   const versionPreview: VersionPreview = {
     version: data.tag,
