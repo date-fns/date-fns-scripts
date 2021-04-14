@@ -4,7 +4,7 @@
   "description": "Internal scripts for keeping the date-fns Firestore database up-to-date",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "repository": "https://github.com/leshakoss/date-fns-scripts.git",
+  "repository": "https://github.com/date-fns/date-fns-scripts.git",
   "author": "Lesha Koss <lesha@hey.com>",
   "license": "MIT",
   "scripts": {
