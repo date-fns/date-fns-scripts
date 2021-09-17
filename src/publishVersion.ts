@@ -32,6 +32,8 @@ interface VersionData {
   docsPages: Array<JSDocFunction | MarkdownDoc>
 }
 
+const SECOND_BATCH_START_INDEX = 200
+
 export async function publishVersion(data: VersionData) {
   admin.initializeApp()
 
@@ -106,15 +108,27 @@ export async function publishVersion(data: VersionData) {
     throw new Error('Could not find date-fns package in storage')
   }
 
-  const publishBatch = batch()
-  publishBatch.update(db.packages, dateFns.ref.id, {
+  const publishBatch1 = batch()
+  publishBatch1.update(db.packages, dateFns.ref.id, {
     versions: [...dateFns.data.versions, versionPreview],
   })
-  publishBatch.set(db.versions, await id(), version)
+  publishBatch1.set(db.versions, await id(), version)
   await Promise.all(
-    versionPages.map((page) =>
-      id().then((pageId) => publishBatch.set(db.pages, pageId, page))
-    )
+    versionPages
+      .slice(0, SECOND_BATCH_START_INDEX)
+      .map((page) =>
+        id().then((pageId) => publishBatch1.set(db.pages, pageId, page))
+      )
   )
-  return publishBatch.commit()
+  await publishBatch1.commit()
+
+  const publishBatch2 = batch()
+  await Promise.all(
+    versionPages
+      .slice(SECOND_BATCH_START_INDEX)
+      .map((page) =>
+        id().then((pageId) => publishBatch2.set(db.pages, pageId, page))
+      )
+  )
+  await publishBatch2.commit()
 }

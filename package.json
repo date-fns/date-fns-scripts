@@ -1,6 +1,6 @@
 {
   "name": "@date-fns/date-fns-scripts",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Internal scripts for keeping the date-fns Firestore database up-to-date",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
